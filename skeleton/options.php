@@ -151,6 +151,8 @@ function optionsframework_options() {
 						"std" => "",
 						"type" => "textarea"); 
 
+
+
   
 	$options[] = array( "name" => "Footer Fine Print",
 						"desc" => "HTML or text to be inserted into the very bottom after the widgets.",

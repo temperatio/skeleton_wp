@@ -20,14 +20,6 @@ jQuery(document).ready(function($) {
 			.superfish({autoArrows	: true});
 	});
 	
-	// Forum Login
-	
-	$(function(){ // run after page loads
-		$("#toggle").click(function() { 
-	    // hides matched elements if shown, shows if hidden
-	    $("#login-form").slideToggle();
-	  });
-	});
 
 	// Style Tags
 	

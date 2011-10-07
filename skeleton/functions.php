@@ -76,6 +76,7 @@ require_once (OPTIONS_FRAMEWORK_URL . 'options-framework.php');
 
 
 require_once (TEMPLATEPATH . '/shortcodes.php');
+require_once (TEMPLATEPATH . '/bpt-functions.php');
 
 /* 
  * This is an example of how to add custom scripts to the options panel.

@@ -1,14 +1,4 @@
 <?php
-if(extension_loaded('zlib')){ob_start('ob_gzhandler');}
-
-header("Content-type: text/css; charset: UTF-8");
-header("Cache-Control: must-revalidate");
-$offset = 60 * 60 ;
-$ExpStr = "Expires: " .
-gmdate("D, d M Y H:i:s",
-time() + $offset) . " GMT";
-header($ExpStr);
-
 // $absolute_path = __FILE__;
 // $path_to_file = explode( 'wp-content', $absolute_path );
 // $path_to_wp = $path_to_file[0];
@@ -207,7 +197,3 @@ a,a:link,a:visited,a:active,#content .gist .gist-file .gist-meta a:visited {colo
 #site-title a {
 	color: <?php echo of_get_option('header_color');?>;
 }
-
-<?php
-if(extension_loaded('zlib')){ob_end_flush();}
-?>

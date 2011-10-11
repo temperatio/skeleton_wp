@@ -121,34 +121,57 @@ function st_registerstyles() {
   	$stylesheets .= wp_enqueue_style('layout', get_bloginfo('template_directory').'/layout.css', 'theme', $version, 'screen, projection');
     $stylesheets .= wp_enqueue_style('formalize', get_bloginfo('template_directory').'/formalize.css', 'theme', $version, 'screen, projection');
     $stylesheets .= wp_enqueue_style('superfish', get_bloginfo('template_directory').'/superfish.css', 'theme', $version, 'screen, projection');
+    $stylesheets .= wp_enqueue_style('themestyles', get_bloginfo('template_directory').'/style.php', 'theme', $version, 'screen, projection');
 		echo apply_filters ('child_add_stylesheets',$stylesheets);
 }
 
 }
 
 // Build Query vars for dynamic theme option CSS from Options Framework
+// Removed due to a problem with BuddyPress
 
-if ( !function_exists( 'production_stylesheet' )) {
+// if ( !function_exists( 'production_stylesheet' )) {
+// 
+// function production_stylesheet($public_query_vars) {
+//     $public_query_vars[] = 'get_styles';
+//     return $public_query_vars;
+// }
+// add_filter('query_vars', 'production_stylesheet');
+// }
+// 
+// if ( !function_exists( 'theme_css' ) ) {
+// 
+// add_action('template_redirect', 'theme_css');
+// function theme_css(){
+//     $css = get_query_var('get_styles');
+//     if ($css == 'css'){
+//         include_once (TEMPLATEPATH . '/style.php');
+//         exit;  //This stops WP from loading any further
+//     }
+// }
+// 
+// }
 
-function production_stylesheet($public_query_vars) {
-    $public_query_vars[] = 'get_styles';
-    return $public_query_vars;
-}
-add_filter('query_vars', 'production_stylesheet');
-}
 
-if ( !function_exists( 'theme_css' ) ) {
+// instead we load custom styles in wp_head
 
-add_action('template_redirect', 'theme_css');
-function theme_css(){
-    $css = get_query_var('get_styles');
-    if ($css == 'css'){
-        include_once (TEMPLATEPATH . '/style.php');
-        exit;  //This stops WP from loading any further
-    }
-}
+if (of_get_option('dev_mode') == '0') {
 
-}
+		function custom_mode() {
+			echo '<style type="text/css">';
+			include_once (TEMPLATEPATH . '/style.php');
+ 			echo '</style>';
+		}
+
+
+add_action( 'wp_head', 'custom_mode' );
+remove_action( 'template_redirect', 'theme_css' );
+remove_filter( 'query_vars', 'production_stylesheet' );
+
+} //endif custom_mode
+
+
+
 
 if ( !function_exists( 'st_header_scripts' ) ) {
 

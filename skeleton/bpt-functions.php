@@ -21,7 +21,7 @@ if ( 'bp-default' == get_option( 'template' ) )
  *
  * @since 1.2
  */
-function bp_tpack_theme_setup() {
+function skeleton_bp_theme_setup() {
 	global $bp;
 
 
@@ -51,14 +51,14 @@ function bp_tpack_theme_setup() {
 			add_action( 'bp_directory_blogs_actions',  'bp_blogs_visit_blog_button' );
 	}
 }
-add_action( 'after_setup_theme', 'bp_tpack_theme_setup', 11 );
+add_action( 'after_setup_theme', 'skeleton_bp_theme_setup', 11 );
 
 /**
  * Enqueues BuddyPress JS and related AJAX functions
  *
  * @since 1.2
  */
-function bp_tpack_enqueue_scripts() {
+function skeleton_bp_enqueue_scripts() {
 	// Do not enqueue JS if it's disabled
 
 	// Add words that we need to use in JS to the end of the page so they can be translated and still used.
@@ -93,14 +93,14 @@ function bp_tpack_enqueue_scripts() {
 	// Localize the JS strings
 	wp_localize_script( 'dtheme-ajax-js', 'BP_DTheme', $params );
 }
-add_action( 'wp_enqueue_scripts', 'bp_tpack_enqueue_scripts' );
+add_action( 'wp_enqueue_scripts', 'skeleton_bp_enqueue_scripts' );
 
 /**
  * Enqueues BuddyPress basic styles
  *
  * @since 1.2
  */
-function bp_tpack_enqueue_styles() {
+function skeleton_bp_enqueue_styles() {
 	// Do not enqueue CSS if it's disabled
 
 	// BP 1.5+
@@ -124,9 +124,9 @@ function bp_tpack_enqueue_styles() {
 		wp_enqueue_style( 'bp-rtl',  get_bloginfo('stylesheet_directory') .'/'. 'bp-rtl.css', array( 'bp' ), $version );
 		
 }
-add_action( 'wp_print_styles', 'bp_tpack_enqueue_styles' );
+add_action( 'wp_print_styles', 'skeleton_bp_enqueue_styles' );
 
-if ( !function_exists( 'bp_tpack_use_wplogin' ) ) :
+if ( !function_exists( 'skeleton_bp_use_wplogin' ) ) :
 /**
  * BP Template Pack doesn't use bp-default's built-in sidebar login block,
  * so during no access requests, we need to redirect them to wp-login for
@@ -134,11 +134,11 @@ if ( !function_exists( 'bp_tpack_use_wplogin' ) ) :
  *
  * @since 1.2
  */
-function bp_tpack_use_wplogin() {
+function skeleton_bp_use_wplogin() {
 	// returning 2 will automatically use wp-login
 	return 2;
 }
-add_filter( 'bp_no_access_mode', 'bp_tpack_use_wplogin' );
+add_filter( 'bp_no_access_mode', 'skeleton_bp_use_wplogin' );
 endif;
 
 /**
@@ -146,7 +146,7 @@ endif;
  *
  * @since 1.2
  */
-function bp_tpack_activity_secondary_avatars( $action, $activity ) {
+function skeleton_bp_activity_secondary_avatars( $action, $activity ) {
 	// sanity check - some older versions of BP do not utilize secondary activity avatars
 	if ( function_exists( 'bp_get_activity_secondary_avatar' ) ) :
 		switch ( $activity->component ) {
@@ -164,7 +164,7 @@ function bp_tpack_activity_secondary_avatars( $action, $activity ) {
 
 	return $action;
 }
-add_filter( 'bp_get_activity_action_pre_meta', 'bp_tpack_activity_secondary_avatars', 10, 2 );
+add_filter( 'bp_get_activity_action_pre_meta', 'skeleton_bp_activity_secondary_avatars', 10, 2 );
 
 
 /**  BP 1.2.x *************************************************************/
@@ -175,23 +175,23 @@ if ( version_compare( BP_VERSION, '1.3', '<' ) ) :
 	 */
 
 	/* Filter the dropdown for selecting the page to show on front to include "Activity Stream" */
-	function bp_tpack_wp_pages_filter( $page_html ) {
+	function skeleton_bp_wp_pages_filter( $page_html ) {
 		if ( 'page_on_front' != substr( $page_html, 14, 13 ) )
 			return $page_html;
 
 		$selected = false;
 		$page_html = str_replace( '</select>', '', $page_html );
 
-		if ( bp_tpack_page_on_front() == 'activity' )
+		if ( skeleton_bp_page_on_front() == 'activity' )
 			$selected = ' selected="selected"';
 
 		$page_html .= '<option class="level-0" value="activity"' . $selected . '>' . __( 'Activity Stream', 'buddypress' ) . '</option></select>';
 		return $page_html;
 	}
-	add_filter( 'wp_dropdown_pages', 'bp_tpack_wp_pages_filter' );
+	add_filter( 'wp_dropdown_pages', 'skeleton_bp_wp_pages_filter' );
 
 	/* Hijack the saving of page on front setting to save the activity stream setting */
-	function bp_tpack_page_on_front_update( $oldvalue, $newvalue ) {
+	function skeleton_bp_page_on_front_update( $oldvalue, $newvalue ) {
 		if ( !is_admin() || !is_super_admin() )
 			return false;
 
@@ -200,10 +200,10 @@ if ( version_compare( BP_VERSION, '1.3', '<' ) ) :
 		else
 			return $oldvalue;
 	}
-	add_action( 'pre_update_option_page_on_front', 'bp_tpack_page_on_front_update', 10, 2 );
+	add_action( 'pre_update_option_page_on_front', 'skeleton_bp_page_on_front_update', 10, 2 );
 
 	/* Load the activity stream template if settings allow */
-	function bp_tpack_page_on_front_template( $template ) {
+	function skeleton_bp_page_on_front_template( $template ) {
 		global $wp_query;
 
 		if ( empty( $wp_query->post->ID ) )
@@ -211,25 +211,28 @@ if ( version_compare( BP_VERSION, '1.3', '<' ) ) :
 		else
 			return $template;
 	}
-	add_filter( 'page_template', 'bp_tpack_page_on_front_template' );
+	add_filter( 'page_template', 'skeleton_bp_page_on_front_template' );
 
 	/* Return the ID of a page set as the home page. */
-	function bp_tpack_page_on_front() {
+	function skeleton_bp_page_on_front() {
 		if ( 'page' != get_option( 'show_on_front' ) )
 			return false;
 
-		return apply_filters( 'bp_tpack_page_on_front', get_option( 'page_on_front' ) );
+		return apply_filters( 'skeleton_bp_page_on_front', get_option( 'page_on_front' ) );
 	}
 
 	/* Force the page ID as a string to stop the get_posts query from kicking up a fuss. */
-	function bp_tpack_fix_get_posts_on_activity_front() {
+	function skeleton_bp_fix_get_posts_on_activity_front() {
 		global $wp_query;
 
 		if ( !empty($wp_query->query_vars['page_id']) && 'activity' == $wp_query->query_vars['page_id'] )
 			$wp_query->query_vars['page_id'] = '"activity"';
 	}
-	add_action( 'pre_get_posts', 'bp_tpack_fix_get_posts_on_activity_front' );
+	add_action( 'pre_get_posts', 'skeleton_bp_fix_get_posts_on_activity_front' );
 
 endif;
+
+
+
 
 ?>

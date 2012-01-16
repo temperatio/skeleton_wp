@@ -78,7 +78,7 @@ require_once (STYLESHEETPATH . '/jigoshop_functions.php');
 }
 
 
-require_once (TEMPLATEPATH . '/shortcodes.php');
+require_once (STYLESHEETPATH . '/shortcodes.php');
 
 /* 
  * This is an example of how to add custom scripts to the options panel.
